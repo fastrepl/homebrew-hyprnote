@@ -1,4 +1,4 @@
-class OWhisper < Formula
+class Owhisper < Formula
   desc "OWhisper"
   homepage "https://github.com/fastrepl/hyprnote/tree/main/owhisper"
   version "0.0.1"
