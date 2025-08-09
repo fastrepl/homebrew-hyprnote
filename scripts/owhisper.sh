@@ -2,21 +2,12 @@
 
 set -e
 
-echo "Fetching latest release..."
-LATEST_VERSION=$(curl -s https://api.github.com/repos/fastrepl/hyprnote/releases/latest | grep '"tag_name":' | grep -o 'owhisper_v[0-9.]*' | head -1)
-
-if [ -z "$LATEST_VERSION" ]; then
-    echo "Error: Could not fetch latest release"
-    exit 1
-fi
-
-VERSION="${LATEST_VERSION#owhisper_v}"
-echo "Latest version: $VERSION"
+VERSION="0.0.2"
 
 echo "Calculating SHA256 checksums..."
-SHA_ARM_MAC=$(curl -sL "https://github.com/fastrepl/hyprnote/releases/download/${LATEST_VERSION}/owhisper-server-aarch64-apple-darwin" | shasum -a 256 | awk '{ print $1 }')
-SHA_X86_MAC=$(curl -sL "https://github.com/fastrepl/hyprnote/releases/download/${LATEST_VERSION}/owhisper-server-x86_64-apple-darwin" | shasum -a 256 | awk '{ print $1 }')
-SHA_X86_LINUX=$(curl -sL "https://github.com/fastrepl/hyprnote/releases/download/${LATEST_VERSION}/owhisper-server-x86_64-unknown-linux-gnu" | shasum -a 256 | awk '{ print $1 }')
+SHA_ARM_MAC=$(curl -sL "https://owhisper.hyprnote.com/download/latest/macos-aarch64" | shasum -a 256 | awk '{ print $1 }')
+SHA_X86_MAC=$(curl -sL "https://owhisper.hyprnote.com/download/latest/macos-x86_64" | shasum -a 256 | awk '{ print $1 }')
+SHA_X86_LINUX=$(curl -sL "https://owhisper.hyprnote.com/download/latest/linux-x86_64" | shasum -a 256 | awk '{ print $1 }')
 
 echo "ARM Mac SHA256: $SHA_ARM_MAC"
 echo "x86 Mac SHA256: $SHA_X86_MAC"
@@ -32,16 +23,16 @@ class Owhisper < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/fastrepl/hyprnote/releases/download/owhisper_v#{version}/owhisper-server-aarch64-apple-darwin"
+      url "https://owhisper.hyprnote.com/download/latest/macos-aarch64"
       sha256 "$SHA_ARM_MAC"
     else
-      url "https://github.com/fastrepl/hyprnote/releases/download/owhisper_v#{version}/owhisper-server-x86_64-apple-darwin"
+      url "https://owhisper.hyprnote.com/download/latest/macos-x86_64"
       sha256 "$SHA_X86_MAC"
     end
   end
   
   on_linux do
-    url "https://github.com/fastrepl/hyprnote/releases/download/owhisper_v#{version}/owhisper-server-x86_64-unknown-linux-gnu"
+    url "https://owhisper.hyprnote.com/download/latest/linux-x86_64"
     sha256 "$SHA_X86_LINUX"
   end
   
