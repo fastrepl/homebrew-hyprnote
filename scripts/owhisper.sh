@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION="0.0.2"
+VERSION="0.0.3"
 
 echo "Calculating SHA256 checksums..."
 SHA_ARM_MAC=$(curl -sL "https://owhisper.hyprnote.com/download/latest/macos-aarch64" | shasum -a 256 | awk '{ print $1 }')
